@@ -1,0 +1,58 @@
+# === Build results ===
+bin/
+obj/
+Debug/
+Release/
+out/
+publish/
+
+# === User-specific files ===
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# === Visual Studio ===
+.vs/
+
+# === NuGet Packages ===
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+
+# === Logs & temp files ===
+*.log
+*.tmp
+*.temp
+*.bak
+
+# === Environment & config ===
+.env
+appsettings.Development.json
+appsettings.Local.json
+appsettings.Secret.json
+appsettings.json
+
+
+# === JetBrains Rider ===
+.idea/
+*.DotSettings.user
+
+# === OS specific ===
+.DS_Store
+Thumbs.db
+
+# === Test results ===
+TestResult.xml
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# === Others (optional) ===
+*.db
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
