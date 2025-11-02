@@ -1,28 +1,77 @@
-using Serilog;
-using EducationCenter.Service;
+using System.Globalization;
 using EducationCenter.Infrastructure;
+using EducationCenter.Infrastructure.Persistence;
+using EducationCenter.Service;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Text.Json.Serialization;
+using Serilog;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
-    .WriteTo.Console()
+    .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
     .CreateLogger();
 
 builder.Host.UseSerilog();
 
-builder.Services.AddControllers();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.PropertyNamingPolicy = null;
+        opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Layer DI
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
 
-// Auth (keyin sozlaysiz)
-// builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(...);
-// builder.Services.AddAuthorization();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
+
+
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        if (!builder.Environment.IsDevelopment())
+        {
+            context.ProblemDetails.Extensions.Remove("exception");
+        }
+    };
+});
+
+
+const string CorsPolicy = "Frontend";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(CorsPolicy, policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
+builder.Services.AddHealthChecks();
+
+builder.Services.AddResponseCompression();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("fixed", opt =>
+    {
+        opt.Window = TimeSpan.FromSeconds(1);
+        opt.PermitLimit = 20;
+        opt.QueueLimit = 0;
+    });
+});
+
 
 var app = builder.Build();
 
@@ -33,10 +82,38 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHsts();
+}
+
+
+app.UseExceptionHandler();
+
+app.UseResponseCompression();
 
 app.UseHttpsRedirection();
-// app.UseAuthentication();
+
+app.UseCors(CorsPolicy);
+
+
 app.UseAuthorization();
+
+app.UseRateLimiter();
+
+
 app.MapControllers();
 
-app.Run();
+
+app.MapHealthChecks("/health");
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await db.Database.MigrateAsync().ConfigureAwait(false);
+}
+
+await app.RunAsync().ConfigureAwait(false);
+
+

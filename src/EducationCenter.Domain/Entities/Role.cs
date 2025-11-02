@@ -11,6 +11,6 @@ namespace EducationCenter.Domain.Entities
     {
         public string Name { get; set; }
         public bool IsActive { get; set; }
-        public IList<User> User { get; set; }
+        public ICollection<User> User { get; } = new HashSet<User>();
     }
 }

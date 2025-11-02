@@ -13,9 +13,9 @@ public static class DependencyInjection
                  ?? "Host=localhost;Port=5432;Database=EducationCenter;Username=postgres;Password=postgres";
 
         services.AddDbContext<AppDbContext>(opt =>
-        {
-            opt.UseNpgsql(cs);
-        });
+            opt.UseNpgsql(config.GetConnectionString("Default")));
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 
         // services.AddScoped<IYourRepository, YourRepository>();
         return services;

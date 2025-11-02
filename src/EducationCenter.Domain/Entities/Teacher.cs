@@ -12,13 +12,12 @@ namespace EducationCenter.Domain.Entities
         public string Description { get; set; }
         public string Dagree { get; set; } // Enum qilish mumkin yoki Degree table
         public int ImageId { get; set; }
-        public List<Attachment> Attachment { get; set; }
+        public ICollection<Attachment> Attachment { get; } = new HashSet<Attachment>();
         public DateTime HireDate { get; set; }
         public int ExoerienceYear { get; set; }
-        public List<TeacherGroup> TeacherGroups { get; set; }
-        public List<TeacherScience> TeacherSciences { get; set; }
-        public List<TeacherStudent> TeacherStudents { get; set; }
-
-
+        public ICollection<TeacherGroup> TeacherGroups { get; } = new HashSet<TeacherGroup>();
+        public ICollection<TeacherScience> TeacherSciences { get; } = new HashSet<TeacherScience>();
+        public ICollection<TeacherStudent> TeacherStudents { get; } = new HashSet<TeacherStudent>();
     }
 }
+

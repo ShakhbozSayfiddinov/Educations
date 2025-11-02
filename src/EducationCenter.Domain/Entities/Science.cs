@@ -11,7 +11,7 @@ namespace EducationCenter.Domain.Entities
     {
         public string Name { get; set; }
         public string ScienceLanguage { get; set; }
-        public List<TeacherScience> TeacherSciences { get; set; }
+        public ICollection<TeacherScience> TeacherSciences { get; } = new HashSet<TeacherScience>();
 
     }
 }

@@ -9,7 +9,7 @@ namespace EducationCenter.Domain.Entities
 {
     public class Student: GlobalUser
     {
-        public List<StudentGroup> StudentGroups { get; set; }
-        public List<TeacherStudent> TeacherStudents { get; set; }
+        public ICollection<StudentGroup> StudentGroups { get;  } = new HashSet<StudentGroup>();
+        public ICollection<TeacherStudent> TeacherStudents { get; } = new HashSet<TeacherStudent>();
     }
 }
