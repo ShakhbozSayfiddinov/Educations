@@ -1,23 +1,22 @@
 using System.Globalization;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 using EducationCenter.Infrastructure;
 using EducationCenter.Infrastructure.Persistence;
 using EducationCenter.Service;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
-using System.Text.Json.Serialization;
-using Serilog;
-using Microsoft.EntityFrameworkCore;
+using EducationCenter.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
     .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
     .CreateLogger();
-
 builder.Host.UseSerilog();
-
 
 builder.Services.AddControllers()
     .AddJsonOptions(opt =>
@@ -30,37 +29,33 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
-
-
-builder.Services.AddProblemDetails(options =>
-{
-    options.CustomizeProblemDetails = context =>
-    {
-        if (!builder.Environment.IsDevelopment())
-        {
-            context.ProblemDetails.Extensions.Remove("exception");
-        }
-    };
-});
-
 
 const string CorsPolicy = "Frontend";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(CorsPolicy, policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowAnyOrigin(); 
     });
 });
 
 builder.Services.AddHealthChecks();
 
-builder.Services.AddResponseCompression();
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.EnableForHttps = true;
+    opts.MimeTypes =
+    [
+        "text/plain","text/css","application/javascript","text/html",
+        "application/xml","application/json","image/svg+xml"
+    ];
+});
+
 
 builder.Services.AddRateLimiter(options =>
 {
@@ -72,10 +67,11 @@ builder.Services.AddRateLimiter(options =>
     });
 });
 
-
 var app = builder.Build();
 
+
 app.UseSerilogRequestLogging();
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -87,26 +83,22 @@ else
     app.UseHsts();
 }
 
+app.UseCustomExceptionHandler(); 
 
-app.UseExceptionHandler();
 
 app.UseResponseCompression();
-
 app.UseHttpsRedirection();
-
 app.UseCors(CorsPolicy);
 
 
 app.UseAuthorization();
-
 app.UseRateLimiter();
 
 
 app.MapControllers();
 
-
-app.MapHealthChecks("/health");
-
+app.MapHealthChecks("/health/live");
+app.MapHealthChecks("/health/ready");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -115,5 +107,3 @@ using (var scope = app.Services.CreateScope())
 }
 
 await app.RunAsync().ConfigureAwait(false);
-
-

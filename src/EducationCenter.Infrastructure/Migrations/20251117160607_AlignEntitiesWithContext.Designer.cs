@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationCenter.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251102151459_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251117160607_AlignEntitiesWithContext")]
+    partial class AlignEntitiesWithContext
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -33,7 +33,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FileName")
@@ -54,14 +54,14 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<int?>("TeacherId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Attachments");
+                    b.ToTable("Attachment", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Course", b =>
@@ -72,7 +72,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -84,12 +84,12 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Course", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Education", b =>
@@ -100,7 +100,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DateFrom")
@@ -121,14 +121,14 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<int>("TeacherId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Educations");
+                    b.ToTable("Education", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Group", b =>
@@ -142,7 +142,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("EndDate")
@@ -157,14 +157,14 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Group", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Role", b =>
@@ -175,7 +175,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
@@ -187,12 +187,12 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Role", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Science", b =>
@@ -203,7 +203,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
@@ -215,12 +215,12 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<string>("ScienceLanguage")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sciences");
+                    b.ToTable("Science", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Student", b =>
@@ -231,7 +231,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DateOfBirth")
@@ -249,7 +249,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("UserId")
@@ -259,7 +259,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Students");
+                    b.ToTable("Student", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.StudentGroup", b =>
@@ -270,7 +270,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("GroupId")
@@ -282,7 +282,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -292,7 +292,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.HasIndex("StudentId", "GroupId")
                         .IsUnique();
 
-                    b.ToTable("StudentGroups");
+                    b.ToTable("StudentGroup", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Teacher", b =>
@@ -303,19 +303,19 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Dagree")
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Degree")
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("ExoerienceYear")
+                    b.Property<int>("ExperienceYears")
                         .HasColumnType("integer");
 
                     b.Property<string>("FirstName")
@@ -336,7 +336,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("UserId")
@@ -346,7 +346,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Teachers");
+                    b.ToTable("Teacher", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.TeacherExperience", b =>
@@ -360,7 +360,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<string>("CompanyName")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DateFrom")
@@ -381,14 +381,14 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<int>("TeacherId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("TeacherExperiences");
+                    b.ToTable("TeacherExperience", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.TeacherGroup", b =>
@@ -399,7 +399,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("GroupId")
@@ -411,7 +411,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<int>("TeacherId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -421,7 +421,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.HasIndex("TeacherId", "GroupId")
                         .IsUnique();
 
-                    b.ToTable("TeacherGroups");
+                    b.ToTable("TeacherGroup", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.TeacherScience", b =>
@@ -432,29 +432,29 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("ScienceID")
+                    b.Property<int>("ScienceId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TeacherId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ScienceID");
+                    b.HasIndex("ScienceId");
 
-                    b.HasIndex("TeacherId", "ScienceID")
+                    b.HasIndex("TeacherId", "ScienceId")
                         .IsUnique();
 
-                    b.ToTable("TeacherSciences");
+                    b.ToTable("TeacherScience", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.TeacherStudent", b =>
@@ -465,7 +465,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
@@ -477,7 +477,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<int>("TeacherId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -487,7 +487,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.HasIndex("TeacherId", "StudentId")
                         .IsUnique();
 
-                    b.ToTable("TeacherStudents");
+                    b.ToTable("TeacherStudent", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.User", b =>
@@ -498,7 +498,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
@@ -513,7 +513,7 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdateAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -523,14 +523,17 @@ namespace EducationCenter.Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Attachment", b =>
                 {
-                    b.HasOne("EducationCenter.Domain.Entities.Teacher", null)
-                        .WithMany("Attachment")
-                        .HasForeignKey("TeacherId");
+                    b.HasOne("EducationCenter.Domain.Entities.Teacher", "Teacher")
+                        .WithMany("Attachments")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Education", b =>
@@ -630,7 +633,7 @@ namespace EducationCenter.Infrastructure.Migrations
                 {
                     b.HasOne("EducationCenter.Domain.Entities.Science", "Science")
                         .WithMany("TeacherSciences")
-                        .HasForeignKey("ScienceID")
+                        .HasForeignKey("ScienceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -667,7 +670,7 @@ namespace EducationCenter.Infrastructure.Migrations
             modelBuilder.Entity("EducationCenter.Domain.Entities.User", b =>
                 {
                     b.HasOne("EducationCenter.Domain.Entities.Role", "Role")
-                        .WithMany("User")
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -684,7 +687,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Role", b =>
                 {
-                    b.Navigation("User");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Science", b =>
@@ -701,7 +704,7 @@ namespace EducationCenter.Infrastructure.Migrations
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Teacher", b =>
                 {
-                    b.Navigation("Attachment");
+                    b.Navigation("Attachments");
 
                     b.Navigation("TeacherGroups");
 

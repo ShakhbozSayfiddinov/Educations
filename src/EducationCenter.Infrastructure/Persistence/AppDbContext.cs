@@ -1,4 +1,7 @@
 using EducationCenter.Domain.Entities;
+using System;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducationCenter.Infrastructure.Persistence;
@@ -26,8 +29,31 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         
         base.OnModelCreating(modelBuilder);
 
+        foreach (var property in modelBuilder.Model.GetEntityTypes()
+                     .SelectMany(entityType => entityType.GetProperties())
+                     .Where(property => property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?)))
+        {
+            property.SetColumnType("timestamp with time zone");
+        }
+
+        // ensure each table name matches its entity name
+        modelBuilder.Entity<Attachment>().ToTable(nameof(Attachment));
+        modelBuilder.Entity<Course>().ToTable(nameof(Course));
+        modelBuilder.Entity<Education>().ToTable(nameof(Education));
+        modelBuilder.Entity<Group>().ToTable(nameof(Group));
+        modelBuilder.Entity<Role>().ToTable(nameof(Role));
+        modelBuilder.Entity<Science>().ToTable(nameof(Science));
+        modelBuilder.Entity<Student>().ToTable(nameof(Student));
+        modelBuilder.Entity<StudentGroup>().ToTable(nameof(StudentGroup));
+        modelBuilder.Entity<Teacher>().ToTable(nameof(Teacher));
+        modelBuilder.Entity<TeacherExperience>().ToTable(nameof(TeacherExperience));
+        modelBuilder.Entity<TeacherGroup>().ToTable(nameof(TeacherGroup));
+        modelBuilder.Entity<TeacherScience>().ToTable(nameof(TeacherScience));
+        modelBuilder.Entity<TeacherStudent>().ToTable(nameof(TeacherStudent));
+        modelBuilder.Entity<User>().ToTable(nameof(User));
+
         modelBuilder.Entity<Role>()
-        .HasMany(r => r.User)
+        .HasMany(r => r.Users)
         .WithOne(u => u.Role)
         .HasForeignKey(u => u.RoleId)
         .OnDelete(DeleteBehavior.Restrict);
@@ -58,6 +84,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasMany(t => t.TeacherStudents)
             .WithOne(ts => ts.Teacher)
             .HasForeignKey(ts => ts.TeacherId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Teacher>()
+            .HasMany(t => t.Attachments)
+            .WithOne(a => a.Teacher)
+            .HasForeignKey(a => a.TeacherId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<TeacherStudent>()
@@ -99,7 +131,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<TeacherScience>()
             .HasOne(ts => ts.Science)
             .WithMany(s => s.TeacherSciences)
-            .HasForeignKey(ts => ts.ScienceID)
+            .HasForeignKey(ts => ts.ScienceId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<TeacherExperience>()
@@ -119,7 +151,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .IsUnique();
 
         modelBuilder.Entity<TeacherScience>()
-            .HasIndex(ts => new { ts.TeacherId, ts.ScienceID })
+            .HasIndex(ts => new { ts.TeacherId, ts.ScienceId })
             .IsUnique();
 
         modelBuilder.Entity<TeacherGroup>()

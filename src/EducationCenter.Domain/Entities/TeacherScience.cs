@@ -11,7 +11,7 @@ namespace EducationCenter.Domain.Entities
     {
 
         public int TeacherId { get; set; }
-        public int ScienceID { get; set; }
+        public int ScienceId { get; set; }
         public Teacher Teacher { get; set; }
         public Science Science { get; set; }
     }
