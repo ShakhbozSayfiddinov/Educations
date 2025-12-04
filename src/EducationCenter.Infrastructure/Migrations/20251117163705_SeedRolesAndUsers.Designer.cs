@@ -3,6 +3,7 @@ using System;
 using EducationCenter.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationCenter.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251117163705_SeedRolesAndUsers")]
+    partial class SeedRolesAndUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,29 +198,29 @@ namespace EducationCenter.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7726),
+                            CreatedAt = new DateTime(2025, 11, 17, 16, 37, 5, 358, DateTimeKind.Utc).AddTicks(8506),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Admin",
-                            UpdatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7728)
+                            UpdatedAt = new DateTime(2025, 11, 17, 16, 37, 5, 358, DateTimeKind.Utc).AddTicks(8508)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7733),
+                            CreatedAt = new DateTime(2025, 11, 17, 16, 37, 5, 358, DateTimeKind.Utc).AddTicks(8513),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Student",
-                            UpdatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7734)
+                            UpdatedAt = new DateTime(2025, 11, 17, 16, 37, 5, 358, DateTimeKind.Utc).AddTicks(8513)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7735),
+                            CreatedAt = new DateTime(2025, 11, 17, 16, 37, 5, 358, DateTimeKind.Utc).AddTicks(8515),
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Teacher",
-                            UpdatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7736)
+                            UpdatedAt = new DateTime(2025, 11, 17, 16, 37, 5, 358, DateTimeKind.Utc).AddTicks(8516)
                         });
                 });
 
@@ -555,12 +558,11 @@ namespace EducationCenter.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(8257),
+                            CreatedAt = new DateTime(2025, 11, 17, 16, 37, 5, 358, DateTimeKind.Utc).AddTicks(8733),
                             Email = "admin@gmail.com",
                             IsDeleted = false,
-                            Password = "web123$",
                             RoleId = 1,
-                            UpdatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(8257)
+                            UpdatedAt = new DateTime(2025, 11, 17, 16, 37, 5, 358, DateTimeKind.Utc).AddTicks(8734)
                         });
                 });
 

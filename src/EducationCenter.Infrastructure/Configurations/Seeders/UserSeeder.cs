@@ -17,6 +17,7 @@ namespace EducationCenter.Infrastructure.Configurations.Seeders
                 {
                     Id = 1,
                     Email = "admin@gmail.com",
+                    Password = "web123$",
                     RoleId = 1,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow

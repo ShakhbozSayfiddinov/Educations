@@ -1,12 +1,15 @@
 using System.Globalization;
+using System.Text;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
+using EducationCenter.Api.Middlewares;
 using EducationCenter.Infrastructure;
 using EducationCenter.Infrastructure.Persistence;
 using EducationCenter.Service;
-using EducationCenter.Api.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +33,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication();
+builder.Services.AddApplication(builder.Configuration);
 
 const string CorsPolicy = "Frontend";
 builder.Services.AddCors(options =>
@@ -67,6 +70,28 @@ builder.Services.AddRateLimiter(options =>
     });
 });
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt =>
+    {
+        var cfg = builder.Configuration.GetSection("Jwt");
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = cfg["Issuer"],
+            ValidAudience = cfg["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(cfg["Key"]!)),
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", p => p.RequireRole("Admin"));
+});
+
+
 var app = builder.Build();
 
 
@@ -91,6 +116,7 @@ app.UseHttpsRedirection();
 app.UseCors(CorsPolicy);
 
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseRateLimiter();
 
