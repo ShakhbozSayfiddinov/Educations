@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationCenter.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251117160607_AlignEntitiesWithContext")]
-    partial class AlignEntitiesWithContext
+    [Migration("20251117164318_UpdateAdminPassword")]
+    partial class UpdateAdminPassword
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -193,6 +193,35 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Role", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7726),
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Admin",
+                            UpdatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7728)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7733),
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Student",
+                            UpdatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7734)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7735),
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Teacher",
+                            UpdatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(7736)
+                        });
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Science", b =>
@@ -524,6 +553,18 @@ namespace EducationCenter.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(8257),
+                            Email = "admin@gmail.com",
+                            IsDeleted = false,
+                            Password = "web123$",
+                            RoleId = 1,
+                            UpdatedAt = new DateTime(2025, 11, 17, 16, 43, 16, 917, DateTimeKind.Utc).AddTicks(8257)
+                        });
                 });
 
             modelBuilder.Entity("EducationCenter.Domain.Entities.Attachment", b =>

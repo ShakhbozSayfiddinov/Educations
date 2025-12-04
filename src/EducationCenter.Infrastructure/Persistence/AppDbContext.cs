@@ -1,4 +1,5 @@
 using EducationCenter.Domain.Entities;
+using EducationCenter.Infrastructure.Configurations.Seeders;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -161,5 +162,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<StudentGroup>()
             .HasIndex(sg => new { sg.StudentId, sg.GroupId })
             .IsUnique();
+
+        modelBuilder.ApplyConfiguration(new RoleSeeder());
+        modelBuilder.ApplyConfiguration(new UserSeeder());
     }
 }
